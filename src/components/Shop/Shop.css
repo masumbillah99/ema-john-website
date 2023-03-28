@@ -16,11 +16,14 @@
     }
     .products-container {
         grid-template-columns: repeat(2, 1fr);
+        gap: 11px;
+        margin: 11px;
     }
 }
 
-@media screen and (max-width:992px) {
+@media screen and (max-width:768px) {
     .products-container {
         grid-template-columns: repeat(1, 1fr);
+        margin-left: 21px;
     }
 }

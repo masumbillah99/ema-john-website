@@ -4,6 +4,7 @@ import "./Cart.css";
 const Cart = ({ cart }) => {
   // destructuring
   // const { cart } = props;
+  console.log(cart);
 
   let totalPrice = 0;
   let totalShipping = 0;
