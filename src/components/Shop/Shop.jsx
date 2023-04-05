@@ -45,10 +45,32 @@ const Shop = () => {
 
   const handleAddToCart = (product) => {
     // cart.push(product);
-    const newCart = [...cart, product];
+    let newCart = [];
+    // const newCart = [...cart, product];
+
+    // if product doesn't exist in the cart, then set quantity = 1
+    // if exist update quantity by 1
+    /** 
+      ১. একটি ভেরিয়েবল নিলাম এক্সিট নামে এবং ফাইন্ড করলাম যে আমাদের প্রোডাক্টটির আইডি কার্টে আছে কি না,
+        যদি না থাকে তাহলে -- প্রোডাক্ট পরিমাণ সেট করো ১  ..এবং নিউকার্টে এড করো আগের যে কার্ট ও নতুন প্রোডাক্ট।
+      ২. আর যদি প্রোডাক্ট যদি এক্সিস্ট করে বা থাকে তাহলে তুমি তার পরিমান ১ বাড়াও ও ফিল্টার করে দেখতেছি যে, প্রোডাক্টটি কার্টে আছে কি না: 
+        যদি না থাকে তাহলে বাকিগুলো ও সেটা এড করো।
+    */
+    const exists = cart.find((pd) => pd.id === product.id);
+    if (!exists) {
+      product.quantity = 1;
+      newCart = [...cart, product];
+    } else {
+      exists.quantity = exists.quantity + 1;
+      const remaining = cart.filter((pd) => pd.id !== product.id);
+      newCart = [...remaining, exists];
+    }
+
     setCart(newCart);
     addToDb(product.id);
   };
+
+  // console.log(cart);
 
   return (
     <section className="shop-container">
