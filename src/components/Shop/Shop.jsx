@@ -1,5 +1,12 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
-import { addToDb, getShoppingCart } from "../../utilities/fakedb";
+import { Link } from "react-router-dom";
+import {
+  addToDb,
+  deleteShoppingCart,
+  getShoppingCart,
+} from "../../utilities/fakedb";
 import Cart from "../Cart/Cart";
 import Product from "../Product/Product";
 import "./Shop.css";
@@ -68,7 +75,10 @@ const Shop = () => {
     addToDb(product.id);
   };
 
-  // console.log(cart);
+  const handleClearCart = () => {
+    setCart([]);
+    deleteShoppingCart();
+  };
 
   return (
     <section className="shop-container">
@@ -82,7 +92,14 @@ const Shop = () => {
         ))}
       </div>
       <div className="cart-container">
-        <Cart cart={cart}></Cart>
+        <Cart cart={cart} handleClearCart={handleClearCart}>
+          <Link to="/orders" className="link-btn-proceed">
+            <button className="btn-proceed">
+              <span>Review Order</span>
+              <FontAwesomeIcon icon={faArrowRight} />
+            </button>
+          </Link>
+        </Cart>
       </div>
     </section>
   );
