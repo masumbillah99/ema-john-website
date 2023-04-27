@@ -4,8 +4,10 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../providers/AuthProvider";
 import "./SignUp.css";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 
 const SignUp = () => {
+  const [show, setShow] = useState(false);
   const [error, setError] = useState("");
   const { createUser } = useContext(AuthContext);
 
@@ -16,7 +18,7 @@ const SignUp = () => {
     const password = form.password.value;
     const confirmPass = form.confirmPassword.value;
 
-    setError('');
+    setError("");
     if (password !== confirmPass) {
       setError("Your password did not match");
       return;
@@ -44,7 +46,27 @@ const SignUp = () => {
         </div>
         <div className="form-control">
           <label htmlFor="password">Password</label>
-          <input type="password" name="password" required />
+          <div className="pass-flex">
+            <input
+              className="pass-input"
+              type={show ? "text" : "password"}
+              name="password"
+              required
+            />
+            <p onClick={() => setShow(!show)}>
+              <small>
+                {show ? (
+                  <span>
+                    <EyeIcon className="hero-icon" />
+                  </span>
+                ) : (
+                  <span>
+                    <EyeSlashIcon className="hero-icon" />
+                  </span>
+                )}
+              </small>
+            </p>
+          </div>
         </div>
         <div className="form-control">
           <label htmlFor="confirmPassword">Confirm Password</label>
@@ -61,9 +83,7 @@ const SignUp = () => {
           </Link>
         </small>
       </p>
-      { error ?
-        <p className="text-error">{error}</p> : ''
-      }
+      {error ? <p className="text-error">{error}</p> : ""}
     </div>
   );
 };
