@@ -1,0 +1,8 @@
+.text-error {
+    width: 350px;
+    margin: 35px auto;
+    padding: 11px;
+    text-align: center;
+    background-color: aliceblue;
+    color: rgb(225, 27, 27);
+}

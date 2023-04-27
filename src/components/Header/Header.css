@@ -13,11 +13,19 @@ nav.header img {
 nav.header a {
     color: #ffffff;
     text-decoration: none;
-    margin-left: 32px;
+    margin: 0 15px;
 }
 
 nav.header a:hover {
     color: orange;
+}
+
+.text-white{
+    color: #B8ACFF;
+    margin-left: 20px;
+}
+.text-white button {
+    margin-left: 15px;
 }
 
 /* @media screen and (max-width: 992px) {

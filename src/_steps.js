@@ -6,3 +6,12 @@
   5. Build > Authentication > get started > enable sing in method
   6. create sign up and sign in route
 */
+
+// use context
+/** 
+  1. create a context provider file and export
+  2. create a context and set provider
+  3. set the children props
+  4. set context value
+  5. set provider
+*/

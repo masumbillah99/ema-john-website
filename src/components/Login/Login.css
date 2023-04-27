@@ -67,7 +67,7 @@ form {
     background: rgba(255, 153, 0, 0.6);
 }
 
-.form-container p {
+.form-container .small-msg {
     margin: -20px 20px;
     text-align: center;
 }
