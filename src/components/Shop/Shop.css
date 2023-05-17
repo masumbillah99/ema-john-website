@@ -1,48 +1,72 @@
 .shop-container {
-    display: grid;
-    grid-template-columns: 4fr 1fr;
+  display: grid;
+  grid-template-columns: 4fr 1fr;
 }
 
 .products-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    margin: 45px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin: 45px;
 }
 
 /* proceed btn style */
 .link-btn-proceed {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .btn-proceed {
-    width: 90%;
-    margin: 10px auto;
-    padding: 15px;
-    color: #ffffff;
-    background-color: #ff9900;
-    border: none;
-    border-radius: 5px;
-    font-size: 21px;
-    display: flex;
-    justify-content: space-between;
-    cursor: pointer;
+  width: 90%;
+  margin: 10px auto;
+  padding: 15px;
+  color: #ffffff;
+  background-color: #ff9900;
+  border: none;
+  border-radius: 5px;
+  font-size: 21px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
 }
 
-@media screen and (max-width:1200px) {
-    .shop-container {
-        grid-template-columns: 2fr 1fr;
-    }
-    .products-container {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 11px;
-        margin: 11px;
-    }
+.pagination {
+  margin: 50px 0;
+  text-align: center;
 }
 
-@media screen and (max-width:768px) {
-    .products-container {
-        grid-template-columns: repeat(1, 1fr);
-        margin-left: 21px;
-    }
+.pagination button {
+  background-color: lightgray;
+  padding: 10px 11px;
+  margin: 0 3px;
+  outline: none;
+}
+
+.pagination .selected {
+  background-color: #ff9900;
+  padding: 7px 5px;
+  margin-left: 10px;
+  outline: none;
+}
+
+.pagination .active {
+  background-color: #ff9900;
+}
+
+/* responsive styles */
+@media screen and (max-width: 1200px) {
+  .shop-container {
+    grid-template-columns: 2fr 1fr;
+  }
+  .products-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 11px;
+    margin: 11px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .products-container {
+    grid-template-columns: repeat(1, 1fr);
+    margin-left: 21px;
+  }
 }

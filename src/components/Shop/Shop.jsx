@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import {
   addToDb,
   deleteShoppingCart,
@@ -14,12 +14,44 @@ import "./Shop.css";
 const Shop = () => {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
+  const { totalProducts } = useLoaderData();
+  const [currentPage, setCurrentPage] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  // const itemPerPage = 10; // TODO: make it dynamic
+  const totalPages = Math.ceil(totalProducts / itemsPerPage);
+
+  // const pageNumbers = [];
+  // for (let i = 1; i <= totalPages; i++) {
+  //   pageNumbers.push(i);
+  // }
+
+  const pageNumbers = [...Array(totalPages).keys()];
+
+  /**
+   * D-1. determine the total number of items
+   * TODO-2. decide on the number of items per page
+   * 3. Calculate the total number of pages
+   * 4. determine the current page
+   * 5. load the appropriate data
+   */
+
+  // useEffect(() => {
+  //   fetch("http://localhost:5000/products")
+  //     .then((res) => res.json())
+  //     .then((data) => setProducts(data));
+  // }, []);
 
   useEffect(() => {
-    fetch("products.json")
-      .then((res) => res.json())
-      .then((data) => setProducts(data));
-  }, []);
+    async function fetchData() {
+      const response = await fetch(
+        `http://localhost:5000/products?page=${currentPage}&limit=${itemsPerPage}`
+      );
+      const data = await response.json();
+      setProducts(data);
+    }
+    fetchData();
+  }, [currentPage, itemsPerPage]);
 
   // get item from local storage
   // 1. get id from object by looping(for in) object
@@ -34,7 +66,7 @@ const Shop = () => {
     // 1. get id of the added product
     for (const id in storedCart) {
       // 2. find Product by using id
-      const addedProduct = products.find((product) => product.id === id);
+      const addedProduct = products.find((product) => product._id === id);
 
       if (addedProduct) {
         // 3. get Product quantity of the product
@@ -61,18 +93,18 @@ const Shop = () => {
       ২. আর যদি প্রোডাক্ট যদি এক্সিস্ট করে বা থাকে তাহলে তুমি তার পরিমান ১ বাড়াও ও ফিল্টার করে দেখতেছি যে, প্রোডাক্টটি কার্টে আছে কি না: 
         যদি না থাকে তাহলে বাকিগুলো ও সেটা এড করো।
     */
-    const exists = cart.find((pd) => pd.id === product.id);
+    const exists = cart.find((pd) => pd._id === product._id);
     if (!exists) {
       product.quantity = 1;
       newCart = [...cart, product];
     } else {
       exists.quantity = exists.quantity + 1;
-      const remaining = cart.filter((pd) => pd.id !== product.id);
+      const remaining = cart.filter((pd) => pd._id !== product._id);
       newCart = [...remaining, exists];
     }
 
     setCart(newCart);
-    addToDb(product.id);
+    addToDb(product._id);
   };
 
   const handleClearCart = () => {
@@ -80,28 +112,61 @@ const Shop = () => {
     deleteShoppingCart();
   };
 
+  // handle select changes
+  const options = [5, 10, 15, 20];
+  const handleSelectChange = (e) => {
+    setItemsPerPage(parseInt(e.target.value));
+    setCurrentPage(0);
+  };
+
   return (
-    <section className="shop-container">
-      <div className="products-container">
-        {products.map((product) => (
-          <Product
-            key={product.id}
-            product={product}
-            handleAddToCart={handleAddToCart}
-          ></Product>
+    <>
+      <div className="shop-container">
+        <div className="products-container">
+          {products.map((product) => (
+            <Product
+              key={product._id}
+              product={product}
+              handleAddToCart={handleAddToCart}
+            ></Product>
+          ))}
+        </div>
+        <div className="cart-container">
+          <Cart cart={cart} handleClearCart={handleClearCart}>
+            <Link to="/orders" className="link-btn-proceed">
+              <button className="btn-proceed">
+                <span>Review Order</span>
+                <FontAwesomeIcon icon={faArrowRight} />
+              </button>
+            </Link>
+          </Cart>
+        </div>
+      </div>
+      {/* pagination */}
+      <div className="pagination">
+        <p>current page: {currentPage}</p>
+        {pageNumbers.map((number) => (
+          <button
+            key={number}
+            className={currentPage === number ? "active" : ""}
+            onClick={() => setCurrentPage(number)}
+          >
+            {number}
+          </button>
         ))}
+        <select
+          className="selected"
+          value={itemsPerPage}
+          onChange={handleSelectChange}
+        >
+          {options.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
       </div>
-      <div className="cart-container">
-        <Cart cart={cart} handleClearCart={handleClearCart}>
-          <Link to="/orders" className="link-btn-proceed">
-            <button className="btn-proceed">
-              <span>Review Order</span>
-              <FontAwesomeIcon icon={faArrowRight} />
-            </button>
-          </Link>
-        </Cart>
-      </div>
-    </section>
+    </>
   );
 };
 

@@ -4,7 +4,7 @@ import React from "react";
 import "./ReviewItem.css";
 
 const ReviewItem = ({ product, handleDelete }) => {
-  const { id, img, name, price, quantity } = product;
+  const { _id, img, name, price, quantity } = product;
 
   return (
     <div className="review-item">
@@ -18,7 +18,7 @@ const ReviewItem = ({ product, handleDelete }) => {
           Order Quantity: <span className="text-orange">${quantity}</span>
         </p>
       </div>
-      <button onClick={() => handleDelete(id)} className="btn-delete">
+      <button onClick={() => handleDelete(_id)} className="btn-delete">
         <FontAwesomeIcon className="delete-icon" icon={faTrashAlt} />
       </button>
     </div>
